@@ -223,7 +223,12 @@ fn fmt_bytes_as_char<W: WriteColor>(f: &mut W, cp: &[char], repl_char: char, byt
             Some(rgb) => {
                 color!(f, rgb, format!("{}", byte))?;
             },
-            _ => write!(f, "{}", byte)?,
+            _ => match byte {
+                '<' => write!(f, "&lt;")?,
+                '>' => write!(f, "&gt;")?,
+                '&' => write!(f, "&amp;")?,
+                b => write!(f, "{}", b)?
+            }
         }
     }
 
